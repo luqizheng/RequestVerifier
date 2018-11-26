@@ -28,7 +28,7 @@ verify signature  of request body and sign the response body
         }
    ``` 
    
-   ``` 
+```csharp
    //in Controller of MVC
    
         [HttpPut][HttpPost] only for put or post 
@@ -38,4 +38,7 @@ verify signature  of request body and sign the response body
         {
             return new string[] { "value1", "value2" };
         }
-           ``` 
+   ```
+# How to make a new signature method
+
+extent ISignature 
