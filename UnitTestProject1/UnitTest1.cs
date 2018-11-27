@@ -31,7 +31,7 @@ namespace UnitTestProject1
             {
                 var signature = Create();
                 var d = signature.Sign(Encoding.UTF8.GetBytes(content));
-              
+
                 var sign = resp.Headers.GetValues("sign");
                 Assert.AreEqual(d, sign.First());
             }
@@ -39,12 +39,13 @@ namespace UnitTestProject1
 
         public HttpContent GetContent()
         {
-            var postData = JsonConvert.SerializeObject(new {data = "test"});
+            var postData = JsonConvert.SerializeObject(new { data = "test" });
             var httpContent = new StringContent(postData, Encoding.UTF8,
                 "application/json");
 
             httpContent.Headers.Add("sign", Create().Sign(Encoding.UTF8.GetBytes(postData)));
             return httpContent;
         }
+      
     }
 }

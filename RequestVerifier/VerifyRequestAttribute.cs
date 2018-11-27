@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Authentication;
+﻿using System.Threading;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -15,28 +14,32 @@ namespace RequestVerifier
         {
             _header = header;
         }
+
         public override void OnActionExecuted(ActionExecutedContext context)
         {
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var method = context.HttpContext.Request.Method.ToLower();
-            if (method != "post" || method != "put")
+            var setting = (SignatureSetting)context.HttpContext.RequestServices.GetService(typeof(SignatureSetting));
+            if (setting.Support(context.HttpContext.Request.Method))
                 return;
-     
-            context.HttpContext.Request.EnableRewind();
-            var stream = context.HttpContext.Request.Body;
-
-            var signature = context.HttpContext.RequestServices.GetService(typeof(ISignature)) as ISignature;
-            signature.Sign(stream);
-
-            var headerSign = context.HttpContext.Request.Headers[_header];
-
-            if (signature != headerSign)
+            var signature = (ISignature)context.HttpContext.RequestServices.GetService(typeof(ISignature));
+            var method = context.HttpContext.Request.Method.ToLower();
+            var verifySign = "";
+            if (method != "get" && method != "delete")
+            {
+                context.HttpContext.Request.EnableRewind();
+                var stream = context.HttpContext.Request.Body;
+                verifySign = signature.Sign(stream);
+            }
+            else
+            {
+                var bytes = setting.Encoding.GetBytes(context.HttpContext.Request.QueryString.ToString());
+                verifySign = signature.Sign(bytes);
+            }
+            if (verifySign != context.HttpContext.Request.Headers[_header])
                 context.Result = new ForbidResult();
-
-
         }
     }
 }

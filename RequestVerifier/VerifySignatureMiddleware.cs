@@ -29,7 +29,7 @@ namespace RequestVerifier
         {
             try
             {
-                if (context.Response.Headers.ContainsKey(_setting.Header))
+                if (!_setting.Support(context.Request.Method) || context.Response.Headers.ContainsKey(_setting.Header))
                     return Task.FromResult(0);
 
                 var bodyStream = context.Response.Body;
