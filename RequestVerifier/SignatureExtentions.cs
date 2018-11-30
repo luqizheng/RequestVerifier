@@ -17,7 +17,7 @@ namespace RequestVerifier
             {
                 Header = httpSignatureHeaderName
             });
-            service.AddScoped(sp => (ISignature)addSignature());
+            service.AddScoped(sp => (ISignature) addSignature());
             return service;
         }
 

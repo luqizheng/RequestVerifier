@@ -4,12 +4,10 @@ using System.Security.Cryptography;
 namespace RequestVerifier.Signature
 {
     /// <summary>
-    /// 
     /// </summary>
     internal static class EncryptUtil
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="inputValue"></param>
         /// <returns></returns>

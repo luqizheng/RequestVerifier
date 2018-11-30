@@ -26,8 +26,6 @@ namespace RequestVerifier.Signature
 
         public string Sign(Stream stream)
         {
-
-
             using (var md = Create())
             {
                 using (var mStream = new MemoryStream())

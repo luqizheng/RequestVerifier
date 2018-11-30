@@ -14,8 +14,11 @@ namespace RequestVerifier
         ///     if Methods contains "get"
         ///     querystring should be verified it.
         /// </summary>
-        public string[] Methods { get; set; } = { "put", "post" };
+        public string[] Methods { get; set; } = { "put", "post", "delete", "get" };
 
+        /// <summary>
+        /// default to UTF8
+        /// </summary>
         public Encoding Encoding { get; set; } = Encoding.UTF8;
 
         public bool Support(string method)

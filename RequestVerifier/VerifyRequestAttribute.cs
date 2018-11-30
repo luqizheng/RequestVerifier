@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Microsoft.AspNetCore.Http.Internal;
+﻿using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using RequestVerifier.Signature;
@@ -21,10 +20,10 @@ namespace RequestVerifier
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var setting = (SignatureSetting)context.HttpContext.RequestServices.GetService(typeof(SignatureSetting));
+            var setting = (SignatureSetting) context.HttpContext.RequestServices.GetService(typeof(SignatureSetting));
             if (setting.Support(context.HttpContext.Request.Method))
                 return;
-            var signature = (ISignature)context.HttpContext.RequestServices.GetService(typeof(ISignature));
+            var signature = (ISignature) context.HttpContext.RequestServices.GetService(typeof(ISignature));
             var method = context.HttpContext.Request.Method.ToLower();
             var verifySign = "";
             if (method != "get" && method != "delete")
@@ -38,6 +37,7 @@ namespace RequestVerifier
                 var bytes = setting.Encoding.GetBytes(context.HttpContext.Request.QueryString.ToString());
                 verifySign = signature.Sign(bytes);
             }
+
             if (verifySign != context.HttpContext.Request.Headers[_header])
                 context.Result = new ForbidResult();
         }

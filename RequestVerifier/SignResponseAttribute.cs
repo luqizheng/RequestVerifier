@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace RequestVerifier
@@ -8,9 +7,10 @@ namespace RequestVerifier
     {
         private readonly string _header;
 
-        private MemoryStream _inseadStream;
-        private Stream _orginalStream;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="header"></param>
         public SignResponseAttribute(string header = "sign")
         {
             _header = header;
